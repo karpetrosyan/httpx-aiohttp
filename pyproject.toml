@@ -1,0 +1,16 @@
+[project]
+name = "httpx-aiohttp"
+version = "0.1.0"
+description = "Aiohttp transports for HTTPX"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "aiohttp >=3, <4",
+    "httpx >=0.28.1, <1",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "ruff>=0.9.10",
+]
