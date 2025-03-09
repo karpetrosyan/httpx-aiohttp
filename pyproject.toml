@@ -1,8 +1,13 @@
+[build-system]
+requires = ["hatchling", "hatch-fancy-pypi-readme"]
+build-backend = "hatchling.build"
+
 [project]
+metadata_version = "2.4"
 name = "httpx-aiohttp"
 version = "0.1.1"
 description = "Aiohttp transport for HTTPX"
-license = {file = "LICENSE"}
+license = {file="LICENSE"}
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
