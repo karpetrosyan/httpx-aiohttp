@@ -74,7 +74,6 @@ async def main() -> None:
     ) as aiohttp_transport:
         httpx_client = httpx.AsyncClient(
             transport=aiohttp_transport,
-            mounts={"all://": AiohttpTransport(client=ClientSession())},
         )
         response = await httpx_client.get("https://www.encode.io")
         print(response)  # <Response [200]>
