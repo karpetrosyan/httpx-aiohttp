@@ -1,6 +1,16 @@
 
+<p align="center"><strong>httpx-aiohttp</strong> <em>- provides transports for httpx to work on top of aiohttp, handling all high-level features like authentication, retries, and cookies through httpx, while delegating low-level socket-level HTTP messaging to aiohttp</em></p>
 
-httpx-aiohttp provides transports for httpx to work on top of aiohttp, handling all high-level features like authentication, retries, and cookies through httpx, while delegating low-level socket-level HTTP messaging to aiohttp
+<p align="center">
+
+  <a href="https://pypi.org/project/httpx-aiohttp">
+      <img src="https://img.shields.io/pypi/v/httpx-aiohttp.svg" alt="pypi">
+  </a>
+
+  <a href="https://img.shields.io/pypi/l/httpx-aiohttp">
+      <img src="https://img.shields.io/pypi/l/httpx-aiohttp" alt="license">
+  </a>
+</p>
 
 ## Installation
 

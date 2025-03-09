@@ -1,13 +1,15 @@
 [project]
 name = "httpx-aiohttp"
 version = "0.1.0"
-description = "Aiohttp transports for HTTPX"
+description = "Aiohttp transport for HTTPX"
+license = "BSD-3-Clause"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "aiohttp >=3, <4",
     "httpx >=0.28.1, <1",
 ]
+authors = [{ name = "Karen Petrosyan", email = "kar.petrosyanpy@gmail.com" }]
 
 [dependency-groups]
 dev = [
