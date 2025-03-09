@@ -1,8 +1,8 @@
 [project]
 name = "httpx-aiohttp"
-version = "0.1.0"
+version = "0.1.1"
 description = "Aiohttp transport for HTTPX"
-license = "BSD-3-Clause"
+license = {file = "LICENSE"}
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
