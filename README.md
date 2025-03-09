@@ -6,10 +6,6 @@
   <a href="https://pypi.org/project/httpx-aiohttp">
       <img src="https://img.shields.io/pypi/v/httpx-aiohttp.svg" alt="pypi">
   </a>
-
-  <a href="https://img.shields.io/pypi/l/httpx-aiohttp">
-      <img src="https://img.shields.io/pypi/l/httpx-aiohttp" alt="license">
-  </a>
 </p>
 
 ## Installation
