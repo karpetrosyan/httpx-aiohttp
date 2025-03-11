@@ -70,4 +70,4 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
       - name: "Echo report"
-        run: cat /app/report.json
+        run: ls /app
