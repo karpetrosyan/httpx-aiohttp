@@ -69,4 +69,4 @@ jobs:
       - name: "ghcr.io login"
         run: docker login --username karpetrosyan/httpx-aiohttp --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
       - name: "Run image"
-        run: docker run -v ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT }}:/app/script.py ghcr.io/karpetrosyan/httpx-aiohttp/benchmarks:latest
+        run: docker run --network=host -v ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT }}:/app/script.py ghcr.io/karpetrosyan/httpx-aiohttp/benchmarks:latest
