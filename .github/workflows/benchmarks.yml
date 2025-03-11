@@ -47,7 +47,6 @@ jobs:
   run:
     name: "Run benchmarks"
     runs-on: "ubuntu-latest"
-    container: docker:27.1.1-cli
     permissions:
       contents: read
       packages: write
@@ -58,6 +57,11 @@ jobs:
     needs:
       - server-nginx-setup
       - client-image-setup
+    container:
+        image: ghcr.io/karpetrosyan/httpx-aiohttp/benchmarks:latest
+        volumes:
+            - ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT }}:/app/script.py
+        options: --network host
     services:
       server:
         image: ${{ matrix.SERVER_IMAGE }}
@@ -66,7 +70,3 @@ jobs:
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
-      - name: "ghcr.io login"
-        run: docker login --username karpetrosyan/httpx-aiohttp --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
-      - name: "Run image"
-        run: docker run --network=host -v ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT }}:/app/script.py ghcr.io/karpetrosyan/httpx-aiohttp/benchmarks:latest
