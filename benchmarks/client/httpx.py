@@ -17,4 +17,4 @@ if SERVER_URL is None:
 # write your benchmark code using any HTTP client
 response = httpx.get(SERVER_URL)
 print(response)
-somehow print results so it will be possible to grab them for the report
+# somehow print results so it will be possible to grab them for the report
