@@ -20,7 +20,8 @@ print(response)
 # somehow print results so it will be possible to grab them for the report
 
 with open(
-    "report.json"
+    "report.json",
+    "w",
 ) as f:
     f.write(
         json.dumps(
