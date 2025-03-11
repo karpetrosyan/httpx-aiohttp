@@ -15,9 +15,6 @@ jobs:
       matrix:
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13" ]
     
-    env: 
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
     steps:
       - uses: "actions/checkout@v4"
       - uses: "actions/setup-python@v5"
@@ -30,3 +27,35 @@ jobs:
         run: uv run ruff format --check
       - name: "Run linter"
         run: uv run ruff check
+
+  benchmarks-image-setup:
+    name: "Build benchmarks image"
+    runs-on: "ubuntu-latest"
+    container: docker:27.1.1-cli
+    strategy:
+      matrix:
+        PYTHON_IMAGE: [ "python" ]
+    steps:
+      - name: "Checkout"
+        run: actions/checkout@v3
+      - name: "Prepare image"
+        run: |
+          docker build -t ghcr.io/httpx-aiohttp/benchmarks:latest --build-arg PYTHON_IMAGE=${{ matrix.PYTHON_IMAGE }} .
+          docker login --username httpx-aiohttp --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
+          docker push ghcr.io/httpx-aiohttp/benchmarks:latest
+
+  benchmarks-run:
+    name: "Run benchmarks"
+    runs-on: "ubuntu-latest"
+    needs: benchmarks-image-setup
+    container: docker:27.1.1-cli
+    strategy:
+      matrix:
+        CLIENT_SCRIPT: [ "benchmarks/client/httpx.py" ]
+    steps:
+      - name: "Checkout"
+        run: actions/checkout@v3
+      - name: "ghcr.io login"
+        run: docker login --username httpx-aiohttp --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
+      - name: "Run image"
+        run: docker run ghcr.io/httpx-aiohttp/benchmarks:latest
