@@ -6,7 +6,7 @@
 # ///
 import json
 import os
-import httpxs
+import httpx
 
 # SERVER_URL = os.getenv("SERVER_URL")
 SERVER_URL = "http://server:8000"
