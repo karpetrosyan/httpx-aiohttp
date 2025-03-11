@@ -18,17 +18,12 @@ jobs:
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
-      - name: "debug"
-        run: | 
-          ls -la
-        working-directory: ${{ github.workspace }}
-      - name: "Going to the server directory"
-        run: cd ${{ github.workspace }}/benchmarks/server/nginx/
       - name: "Prepare image"
         run: |
           docker build -t ghcr.io/karpetrosyan/httpx-aiohttp/server/nginx:latest .
           docker login --username httpx-aiohttp --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
           docker push ghcr.io/karpetrosyan/httpx-aiohttp/server/nginx:latest
+        working-directory: ${{ github.workspace }}/benchmarks/server/nginx
 
   client-image-setup:
     name: "Build benchmarks image"
