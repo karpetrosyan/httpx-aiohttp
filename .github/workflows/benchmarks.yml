@@ -20,9 +20,8 @@ jobs:
         uses: actions/checkout@v4
       - name: "debug"
         run: | 
-          ls ${{ github.workspace }}
-          ls ${{ github.workspace }}/benchmarks
-          ls ${{ github.workspace }}/benchmarks/server
+          ls -la
+        working-directory: ${{ github.workspace }}
       - name: "Going to the server directory"
         run: cd ${{ github.workspace }}/benchmarks/server/nginx/
       - name: "Prepare image"
