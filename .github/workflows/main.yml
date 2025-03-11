@@ -57,11 +57,11 @@ jobs:
       packages: write
     strategy:
       matrix:
-        CLIENT_SCRIPT: [ "./benchmarks/client/httpx.py" ]
+        CLIENT_SCRIPT: [ "/benchmarks/client/httpx.py" ]
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
       - name: "ghcr.io login"
         run: docker login --username karpetrosyan/httpx-aiohttp --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
       - name: "Run image"
-        run: docker run -v ${{ matrix.CLIENT_SCRIPT }}:/app/script.py ghcr.io/karpetrosyan/httpx-aiohttp/benchmarks:latest
+        run: docker run -v ${GITHUB_WORKSPACE}${{ matrix.CLIENT_SCRIPT }}:/app/script.py ghcr.io/karpetrosyan/httpx-aiohttp/benchmarks:latest
