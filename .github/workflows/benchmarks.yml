@@ -52,22 +52,26 @@ jobs:
       packages: write
     strategy:
       matrix:
-        CLIENT_SCRIPT: [ "/benchmarks/client/httpx.py" ]
+        CLIENT_SCRIPT_DIR: [ "/benchmarks/client/httpx" ]
         SERVER_IMAGE: [ "ghcr.io/karpetrosyan/httpx-aiohttp/server/nginx:latest" ]
     needs:
       - server-nginx-setup
       - client-image-setup
     container:
         image: ghcr.io/karpetrosyan/httpx-aiohttp/benchmarks:latest
-        volumes:
-            - ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT }}:/app/script.py
     services:
       server:
         image: ${{ matrix.SERVER_IMAGE }}
         ports:
           - 8000:8000
     steps:
-      - name: "Echo report"
-        run: ls -la /app
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
       - name: "Run script"
-        run: uv run -s /app/script.py
+        run: uv run -s script.py
+        working-directory: ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT_DIR }}
+
+      - name: "Cat report"
+        run: cat report.txt
+        working-directory: ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT_DIR }}
