@@ -67,7 +67,7 @@ jobs:
         ports:
           - 8000:8000
     steps:
+      - name: "Echo report"
+        run: ls -la /app
       - name: "Run script"
         run: uv run -s /app/script.py
-      - name: "Echo report"
-        run: ls /app
