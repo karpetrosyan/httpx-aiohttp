@@ -6,29 +6,27 @@ on:
   pull_request:
     branches: ["main"]
 
-jobs:
-  tests:
-    name: "Python ${{ matrix.python-version }}"
-    runs-on: "ubuntu-latest"
-    
-    strategy:
-      matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13" ]
-    
-    steps:
-      - uses: "actions/checkout@v4"
-      - uses: "actions/setup-python@v5"
-        with:
-          python-version: "${{ matrix.python-version }}"
-          allow-prereleases: true
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-      - name: "Run formatter"
-        run: uv run ruff format --check
-      - name: "Run linter"
-        run: uv run ruff check
 
-  benchmarks-client-images-setup:
+jobs:
+  server-nginx-setup:
+    name: "Setup nginx image"
+    runs-on: "ubuntu-latest"
+    container: docker:27.1.1-cli
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+      - name: "Going to the server directory"
+        run: cd ${{ github.workspace }}/benchmarks/server/nginx
+      - name: "Prepare image"
+        run: |
+          docker build -t ghcr.io/karpetrosyan/httpx-aiohttp/server/nginx:latest .
+          docker login --username httpx-aiohttp --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
+          docker push ghcr.io/karpetrosyan/httpx-aiohttp/server/nginx:latest
+
+  client-image-setup:
     name: "Build benchmarks image"
     runs-on: "ubuntu-latest"
     container: docker:27.1.1-cli
@@ -47,10 +45,9 @@ jobs:
           docker login --username httpx-aiohttp --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
           docker push ghcr.io/karpetrosyan/httpx-aiohttp/benchmarks:latest
 
-  benchmarks-run:
+  run:
     name: "Run benchmarks"
     runs-on: "ubuntu-latest"
-    needs: benchmarks-image-setup
     container: docker:27.1.1-cli
     permissions:
       contents: read
@@ -58,10 +55,19 @@ jobs:
     strategy:
       matrix:
         CLIENT_SCRIPT: [ "/benchmarks/client/httpx.py" ]
+        SERVER_IMAGE: [ "ghcr.io/karpetrosyan/httpx-aiohttp/server/nginx:latest" ]
+    needs:
+      - server-nginx-setup
+      - client-image-setup
+    services:
+      server:
+        image: ${{ matrix.SERVER_IMAGE }}
+        ports:
+          - 8000:8000
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
       - name: "ghcr.io login"
         run: docker login --username karpetrosyan/httpx-aiohttp --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
       - name: "Run image"
-        run: docker run -v ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT }}:/app/script.py ghcr.io/karpetrosyan/httpx-aiohttp/benchmarks:latest
+        run: docker run -v ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT }}:/app/scrip
