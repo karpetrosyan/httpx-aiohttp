@@ -37,7 +37,7 @@ jobs:
         PYTHON_IMAGE: [ "python" ]
     steps:
       - name: "Checkout"
-        run: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: "Prepare image"
         run: |
           docker build -t ghcr.io/httpx-aiohttp/benchmarks:latest --build-arg PYTHON_IMAGE=${{ matrix.PYTHON_IMAGE }} .
@@ -54,7 +54,7 @@ jobs:
         CLIENT_SCRIPT: [ "benchmarks/client/httpx.py" ]
     steps:
       - name: "Checkout"
-        run: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: "ghcr.io login"
         run: docker login --username httpx-aiohttp --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
       - name: "Run image"
