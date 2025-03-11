@@ -73,5 +73,5 @@ jobs:
         working-directory: ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT_DIR }}
 
       - name: "Cat report"
-        run: cat report.txt
+        run: cat report.json
         working-directory: ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT_DIR }}
