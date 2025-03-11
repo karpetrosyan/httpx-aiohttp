@@ -61,7 +61,6 @@ jobs:
         image: ghcr.io/karpetrosyan/httpx-aiohttp/benchmarks:latest
         volumes:
             - ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT }}:/app/script.py
-        options: --network host
     services:
       server:
         image: ${{ matrix.SERVER_IMAGE }}
