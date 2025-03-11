@@ -57,7 +57,7 @@ jobs:
       packages: write
     strategy:
       matrix:
-        CLIENT_SCRIPT: [ "/benchmarks/client/httpx.py" ]
+        CLIENT_SCRIPT: [ "/benchmarks/client/script.py" ]
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
