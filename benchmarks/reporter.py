@@ -90,6 +90,6 @@ def post_github_comment(comment_message: str):
 
 post_github_comment(
     comment_message=generate_report(
-        df.sort_values(by="name", key=lambda x: x.split("-")[2:-1])
+        df.sort_values(by="name", key=lambda x: x.str.split("-")[2:-1])
     )
 )
