@@ -29,6 +29,9 @@ for directory in dir_path.iterdir():
         report["name"] = directory.name
         reports.append(report)
 
+reports.sort(
+    key=lambda x: x["name"].split("-")[2:-1]
+)
 
 df = pd.DataFrame(reports)
 
@@ -57,7 +60,7 @@ def generate_report(df):
 
 # Example usage
 # Assuming `reports` is already defined
-markdown_report = generate_report(df.sort_values(by="name"))
+markdown_report = generate_report(df)
 print(markdown_report)
 
 
@@ -90,6 +93,6 @@ def post_github_comment(comment_message: str):
 
 post_github_comment(
     comment_message=generate_report(
-        df.sort_values(by="name", key=lambda x: x.str.split("-")[2:-1])
+        df
     )
 )
