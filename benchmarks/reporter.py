@@ -30,7 +30,7 @@ for directory in dir_path.iterdir():
         reports.append(report)
 
 reports.sort(
-    key=lambda x: x["name"].split("-")[2:-1]
+    key=lambda x: x["name"].split("-")[2:-1] + x["name"].split("-")[1] + x["name"].split("-")[-1]
 )
 
 df = pd.DataFrame(reports)
