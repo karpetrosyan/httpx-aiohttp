@@ -1,15 +1,14 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
-#     "httpx>=0.28.1",
+#     "blacksheep",
 # ]
 # ///
+import asyncio
+import time
 import json
 import os
-import time
-
-import httpx
-import asyncio
+from blacksheep.client import ClientSession
 
 SERVER_URL = os.getenv("SERVER_URL")
 REQUESTS_COUNT = int(os.getenv("REQUESTS_COUNT"))
@@ -19,10 +18,7 @@ if SERVER_URL is None:
 
 
 async def main() -> None:
-    async with httpx.AsyncClient(
-        limits=httpx.Limits(max_connections=1000, max_keepalive_connections=1000),
-        timeout=httpx.Timeout(20),
-    ) as client:
+    async with ClientSession() as client:
         tasks = []
         for _ in range(REQUESTS_COUNT):
             tasks.append(asyncio.create_task(client.get(SERVER_URL)))
@@ -39,11 +35,7 @@ async def main() -> None:
                 {
                     "requests_count": REQUESTS_COUNT,
                     "success_count": len(
-                        [
-                            response
-                            for response in results
-                            if response.status_code == 200
-                        ]
+                        [response for response in results if response.status == 200]
                     ),
                     "elapsed_time": t2 - t1,
                 }
