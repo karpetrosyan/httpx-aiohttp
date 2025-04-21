@@ -10,17 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      HISHEL_PYPI: ${{ secrets.HTTPX_AIOHTTP_PYPI }}
+      HTTPX_AIOHTTP_PYPI: ${{ secrets.HTTPX_AIOHTTP_PYPI }}
 
     steps:
-      - uses: "actions/checkout@v4"
-      - uses: "actions/setup-python@v5"
+      - name: "Checkout code"
+        uses: "actions/checkout@v4"
+      - name: "Setup uv"
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: 3.13
-      - name: "Install dependencies"
-        run: "pip install -r requirements.txt"
+          version: "0.6.12"
       - name: "Build"
-        run: "hatch build"
+        run: "uv build"
       - name: "Publish docs"
         run: ./scripts/publish-docs
       - name: "Publish"
