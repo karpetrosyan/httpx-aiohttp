@@ -1,4 +1,4 @@
-name: Tests
+name: Benchmarks
 
 on:
   push:
@@ -24,6 +24,23 @@ jobs:
           docker login --username httpx-aiohttp --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
           docker push ghcr.io/karpetrosyan/httpx-aiohttp/server/nginx:latest
         working-directory: ${{ github.workspace }}/benchmarks/server/nginx
+
+  server-uvicorn-setup:
+    name: "Setup Uvicorn Image"
+    runs-on: "ubuntu-latest"
+    container: docker:27.1.1-cli
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+      - name: "Prepare image"
+        run: |
+          docker build -t ghcr.io/karpetrosyan/httpx-aiohttp/server/uvicorn:latest .
+          docker login --username httpx-aiohttp --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
+          docker push ghcr.io/karpetrosyan/httpx-aiohttp/server/uvicorn:latest
+        working-directory: ${{ github.workspace }}/benchmarks/server/uvicorn
 
   client-image-setup:
     name: "Build benchmarks image"
@@ -52,10 +69,12 @@ jobs:
       packages: write
     strategy:
       matrix:
-        CLIENT_SCRIPT_DIR: [ "/benchmarks/client/httpx" ]
-        SERVER_IMAGE: [ "ghcr.io/karpetrosyan/httpx-aiohttp/server/nginx:latest" ]
+        CLIENT_SCRIPT_DIR: [ "/benchmarks/client/httpx", "/benchmarks/client/httpx-aiohttp", "/benchmarks/client/blacksheep" ]
+        SERVER_IMAGE: [ "ghcr.io/karpetrosyan/httpx-aiohttp/server/nginx:latest", "ghcr.io/karpetrosyan/httpx-aiohttp/server/uvicorn:latest" ]
+        REQUESTS_COUNT: [ "500", "600", "700" ]
     needs:
       - server-nginx-setup
+      - server-uvicorn-setup
       - client-image-setup
     container:
         image: ghcr.io/karpetrosyan/httpx-aiohttp/benchmarks:latest
@@ -69,9 +88,35 @@ jobs:
         uses: actions/checkout@v4
 
       - name: "Run script"
-        run: uv run -s script.py
+        run: REQUESTS_COUNT=${{ matrix.REQUESTS_COUNT }} uv run -s script.py
         working-directory: ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT_DIR }}
 
+      - name: "Generate artifact name"
+        run: echo "artifact_name=report-$(python3 -c "print('${{ matrix.SERVER_IMAGE }}'.split('/')[-1].split(':')[0] + '-' + '${{ matrix.CLIENT_SCRIPT_DIR }}'.split('/')[-1])")-${{ matrix.REQUESTS_COUNT }}.json" >> $GITHUB_ENV
+
       - name: "Cat report"
-        run: cat report.json
-        working-directory: ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT_DIR }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.artifact_name }}
+          path: ${{ github.workspace }}${{ matrix.CLIENT_SCRIPT_DIR }}/report.json
+  report:
+    name: "Report"
+    runs-on: "ubuntu-latest"
+    needs: run
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ github.workspace }}/report
+          pattern: report-*
+          merge-multiple: false
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: "Reporting"
+        working-directory: ${{ github.workspace }}/benchmarks
+        run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} PR_NUMBER=${{ github.event.number }} uv run -s reporter.py ${{ github.workspace }}/report
