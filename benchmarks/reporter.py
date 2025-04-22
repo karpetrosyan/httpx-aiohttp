@@ -30,7 +30,9 @@ for directory in dir_path.iterdir():
         reports.append(report)
 
 reports.sort(
-    key=lambda x: ''.join(x["name"].split("-")[2:-1]) + x["name"].split("-")[1] + x["name"].split("-")[-1]
+    key=lambda x: "".join(x["name"].split("-")[2:-1])
+    + x["name"].split("-")[1]
+    + x["name"].split("-")[-1]
 )
 
 df = pd.DataFrame(reports)
@@ -91,8 +93,4 @@ def post_github_comment(comment_message: str):
         return f"Failed to post comment: {response.status_code}, {response.text}"
 
 
-post_github_comment(
-    comment_message=generate_report(
-        df
-    )
-)
+post_github_comment(comment_message=generate_report(df))
