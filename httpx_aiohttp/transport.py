@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import contextlib
 
 import httpx
@@ -55,7 +57,9 @@ class AiohttpResponseStream(httpx.AsyncByteStream):
 
 
 class AiohttpTransport(httpx.AsyncBaseTransport):
-    def __init__(self, client: ClientSession) -> None:
+    def __init__(
+        self, client: ClientSession | typing.Callable[[], ClientSession]
+    ) -> None:
         self.client = client
 
     async def handle_async_request(
@@ -64,6 +68,9 @@ class AiohttpTransport(httpx.AsyncBaseTransport):
     ) -> httpx.Response:
         timeout = request.extensions.get("timeout", {})
         sni_hostname = request.extensions.get("sni_hostname")
+
+        if not isinstance(self.client, ClientSession):
+            self.client = self.client()
 
         with map_aiohttp_exceptions():
             response = await self.client.request(
@@ -90,4 +97,5 @@ class AiohttpTransport(httpx.AsyncBaseTransport):
         )
 
     async def aclose(self) -> None:
-        await self.client.close()
+        if isinstance(self.client, ClientSession):
+            await self.client.close()

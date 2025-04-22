@@ -81,3 +81,26 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
+
+### Shared client instance
+
+```python
+import asyncio
+import httpx
+from httpx_aiohttp import AiohttpTransport
+from aiohttp import ClientSession
+
+httpx_client = httpx.AsyncClient(
+    transport=AiohttpTransport(
+        client=lambda: ClientSession()
+    ),
+)
+
+async def main() -> None:
+    async with  httpx_client:
+        response = await httpx_client.get("https://www.encode.io")
+        print(response)  # <Response [200]>
+
+
+asyncio.run(main())
+```
