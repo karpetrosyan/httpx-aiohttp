@@ -21,7 +21,5 @@ jobs:
           version: "0.6.12"
       - name: "Build"
         run: "uv build"
-      - name: "Publish docs"
-        run: ./scripts/publish-docs
       - name: "Publish"
         run: "./scripts/publish"
