@@ -9,9 +9,6 @@ jobs:
     name: upload release to PyPI
     runs-on: ubuntu-latest
 
-    env:
-      HTTPX_AIOHTTP_PYPI: ${{ secrets.HTTPX_AIOHTTP_PYPI }}
-
     steps:
       - name: "Checkout code"
         uses: "actions/checkout@v4"
@@ -22,4 +19,4 @@ jobs:
       - name: "Build"
         run: "uv build"
       - name: "Publish"
-        run: "./scripts/publish"
+        run: "uv publish -t ${{ secrets.HTTPX_AIOHTTP_PYPI }}"
