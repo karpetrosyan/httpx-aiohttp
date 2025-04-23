@@ -19,4 +19,4 @@ jobs:
       - name: "Build"
         run: "uv build"
       - name: "Publish"
-        run: "uv publish -t ${{ secrets.HTTPX_AIOHTTP_PYPI }}"
+        run: "uv publish -t ${{ secrets.HTTPX_AIOHTTP }}"
