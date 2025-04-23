@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 metadata_version = "2.4"
 name = "httpx-aiohttp"
-version = "0.1.1"
+version = "0.1.2"
 description = "Aiohttp transport for HTTPX"
 license = {file="LICENSE"}
 readme = "README.md"
