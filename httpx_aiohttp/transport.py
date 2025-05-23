@@ -73,11 +73,16 @@ class AiohttpTransport(httpx.AsyncBaseTransport):
             self.client = self.client()
 
         with map_aiohttp_exceptions():
+            try:
+                data = request.content
+            except httpx.RequestNotRead:
+                data = request.stream
+
             response = await self.client.request(
                 method=request.method,
                 url=str(request.url),
                 headers=request.headers,
-                data=request.content,
+                data=data,
                 allow_redirects=False,
                 auto_decompress=False,
                 compress=False,
