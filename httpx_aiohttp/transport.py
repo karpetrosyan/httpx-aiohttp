@@ -76,7 +76,7 @@ class AiohttpTransport(httpx.AsyncBaseTransport):
             try:
                 data = request.content
             except httpx.RequestNotRead:
-                data = request.stream
+                data = request.stream  # type: ignore
                 request.headers.pop("transfer-encoding", None)  # handled by aiohttp
 
             response = await self.client.request(
