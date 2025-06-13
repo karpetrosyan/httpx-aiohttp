@@ -11,13 +11,27 @@ license = {file="LICENSE"}
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
-    "aiohttp >=3, <4",
+    "aiohttp>=3.10.0,<4",
     "httpx >=0.28.1, <1",
 ]
 authors = [{ name = "Karen Petrosyan", email = "kar.petrosyanpy@gmail.com" }]
 
 [dependency-groups]
 dev = [
+    "fastapi>=0.115.12",
     "mypy>=1",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.24.0",
     "ruff>=0.9.10",
+    "trio>=0.27.0",
+    "uvicorn>=0.33.0",
 ]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["F", "I"]

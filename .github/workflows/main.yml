@@ -27,3 +27,7 @@ jobs:
         run: uv run ruff format --check
       - name: "Run linter"
         run: uv run ruff check
+      - name: "Run tests"
+        run: |
+          uv pip --directory=tests/httpx install -r requirements.txt 
+          uv run pytest 

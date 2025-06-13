@@ -6,13 +6,14 @@
 #     "aiohttp",
 # ]
 # ///
+import asyncio
 import json
 import os
 import time
 
 import aiohttp
 import httpx
-import asyncio
+
 import httpx_aiohttp
 
 SERVER_URL = os.getenv("SERVER_URL")
@@ -23,9 +24,7 @@ if SERVER_URL is None:
 
 
 async def main() -> None:
-    async with httpx_aiohttp.AiohttpTransport(
-        client=aiohttp.ClientSession()
-    ) as transport:
+    async with httpx_aiohttp.AiohttpTransport(client=aiohttp.ClientSession()) as transport:
         async with httpx.AsyncClient(transport=transport) as client:
             tasks = []
             for _ in range(REQUESTS_COUNT):
@@ -42,13 +41,7 @@ async def main() -> None:
             json.dumps(
                 {
                     "requests_count": REQUESTS_COUNT,
-                    "success_count": len(
-                        [
-                            response
-                            for response in results
-                            if response.status_code == 200
-                        ]
-                    ),
+                    "success_count": len([response for response in results if response.status_code == 200]),
                     "elapsed_time": t2 - t1,
                 }
             )
