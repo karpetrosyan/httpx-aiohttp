@@ -11,10 +11,7 @@ import httpx
 from aiohttp import ClientTimeout
 from aiohttp.client import ClientResponse, ClientSession
 
-from httpx_aiohttp.errors import ClientConnectionError
-
 AIOHTTP_EXC_MAP = {
-    aiohttp.client_exceptions.ConnectionTimeoutError: ClientConnectionError,
     aiohttp.ServerTimeoutError: httpx.TimeoutException,
     aiohttp.SocketTimeoutError: httpx.ReadTimeout,
     aiohttp.ClientConnectionError: httpx.ConnectTimeout,
