@@ -32,6 +32,9 @@ asyncio_mode = "auto"
 
 [tool.ruff]
 line-length = 120
+exclude = [
+    "tests/httpx"
+]
 
 [tool.ruff.lint]
 select = ["F", "I"]
