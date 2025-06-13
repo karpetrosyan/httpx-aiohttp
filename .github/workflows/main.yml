@@ -32,4 +32,4 @@ jobs:
       - name: "Run tests"
         run: |
           uv pip --directory=tests/httpx install -r requirements.txt 
-          uv run pytest 
+          uv run scripts/run_tests.py
