@@ -5,8 +5,6 @@ import typing as t
 
 import httpx
 
-from httpx_aiohttp import AiohttpTransport
-
 SOCKET_OPTION = t.Union[
     t.Tuple[int, int, int],
     t.Tuple[int, int, t.Union[bytes, bytearray]],
@@ -25,6 +23,8 @@ class HttpxAiohttpClient(httpx.AsyncClient):
         limits: httpx.Limits = httpx.Limits(max_connections=100, max_keepalive_connections=20),
         transport: httpx.AsyncBaseTransport | None = None,
     ) -> httpx.AsyncBaseTransport:
+        from httpx_aiohttp import AiohttpTransport
+
         if transport is not None:
             return transport
 
@@ -47,6 +47,8 @@ class HttpxAiohttpClient(httpx.AsyncClient):
         http2: bool = False,
         limits: httpx.Limits = httpx.Limits(max_connections=100, max_keepalive_connections=20),
     ) -> httpx.AsyncBaseTransport:
+        from httpx_aiohttp import AiohttpTransport
+
         return AiohttpTransport(
             verify=verify,
             cert=cert,
