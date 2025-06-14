@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0 (14th June, 2025)
+## 0.16 (14th June, 2025)
 
 - Add `HttpxAiohttpClient` class 
 - Test the aiohttp-powered transport with httpx tests
