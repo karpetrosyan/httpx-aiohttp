@@ -158,7 +158,7 @@ class AiohttpTransport(httpx.AsyncBaseTransport):
                     connect=timeout.get("pool"),
                 ),
                 server_hostname=sni_hostname,
-                proxy=self.proxy.url if self.proxy else None,
+                proxy=str(self.proxy.url) if self.proxy else None,
                 proxy_auth=self.proxy.auth if self.proxy and self.proxy.auth else None,
                 proxy_headers=self.proxy.headers if self.proxy else None,
             ).__aenter__()
@@ -168,7 +168,7 @@ class AiohttpTransport(httpx.AsyncBaseTransport):
             headers=response.headers,
             content=AiohttpResponseStream(response),
             request=request,
-            extensions={"http_version": b"HTTP/1.1"},
+            extensions={"http_version": b"HTTP/1.1", "reason_phrase": response.reason.encode()},
         )
 
     async def aclose(self) -> None:

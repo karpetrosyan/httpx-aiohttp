@@ -22,6 +22,7 @@ class HttpxAiohttpClient(httpx.AsyncClient):
         http2: bool = False,
         limits: httpx.Limits = httpx.Limits(max_connections=100, max_keepalive_connections=20),
         transport: httpx.AsyncBaseTransport | None = None,
+        **kwargs: t.Any,
     ) -> httpx.AsyncBaseTransport:
         from httpx_aiohttp import AiohttpTransport
 
@@ -46,6 +47,7 @@ class HttpxAiohttpClient(httpx.AsyncClient):
         http1: bool = True,
         http2: bool = False,
         limits: httpx.Limits = httpx.Limits(max_connections=100, max_keepalive_connections=20),
+        **kwargs: t.Any,
     ) -> httpx.AsyncBaseTransport:
         from httpx_aiohttp import AiohttpTransport
 
