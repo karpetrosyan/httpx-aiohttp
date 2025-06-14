@@ -1,0 +1,3 @@
+#! /bin/bash -ex
+
+uv publish -t $HISHEL_PYPI

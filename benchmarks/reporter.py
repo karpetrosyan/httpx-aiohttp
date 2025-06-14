@@ -5,12 +5,13 @@
 
 """Collects report.json files from multiple sources and generates a simple report."""
 
-from pathlib import Path
-import pandas as pd
-import sys
 import json
-import httpx
 import os
+import sys
+from pathlib import Path
+
+import httpx
+import pandas as pd
 
 first_arg = sys.argv[1]
 
@@ -29,11 +30,7 @@ for directory in dir_path.iterdir():
         report["name"] = directory.name
         reports.append(report)
 
-reports.sort(
-    key=lambda x: "".join(x["name"].split("-")[2:-1])
-    + x["name"].split("-")[1]
-    + x["name"].split("-")[-1]
-)
+reports.sort(key=lambda x: "".join(x["name"].split("-")[2:-1]) + x["name"].split("-")[1] + x["name"].split("-")[-1])
 
 df = pd.DataFrame(reports)
 
@@ -45,12 +42,8 @@ def generate_report(df):
     report_str.append(f"**PR Number**: {os.getenv('PR_NUMBER')}")
 
     report_str.append("\n## Detailed Results")
-    report_str.append(
-        "| Test Name | Success Count | Elapsed Time (s) | Requests Count |"
-    )
-    report_str.append(
-        "|-----------|---------------|------------------| ---------------|"
-    )
+    report_str.append("| Test Name | Success Count | Elapsed Time (s) | Requests Count |")
+    report_str.append("|-----------|---------------|------------------| ---------------|")
 
     for _, row in df.iterrows():
         report_str.append(

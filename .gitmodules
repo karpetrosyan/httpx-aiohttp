@@ -1,0 +1,4 @@
+[submodule "tests/httpx"]
+	path = tests/httpx
+	url = https://github.com/karpetrosyan/httpx.git
+	branch = httpx-aiohttp

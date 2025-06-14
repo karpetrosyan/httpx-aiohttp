@@ -1,21 +1,32 @@
 from __future__ import annotations
 
 import contextlib
-
-import httpx
+import ssl
 import typing
-from aiohttp import ClientTimeout
-from aiohttp.client import ClientSession, ClientResponse
+import typing as t
+from logging import warning
+
 import aiohttp
+import httpx
+from aiohttp import ClientTimeout
+from aiohttp.client import ClientResponse, ClientSession
 
 AIOHTTP_EXC_MAP = {
     aiohttp.ServerTimeoutError: httpx.TimeoutException,
-    aiohttp.ConnectionTimeoutError: httpx.ConnectTimeout,
     aiohttp.SocketTimeoutError: httpx.ReadTimeout,
+    aiohttp.ClientConnectionError: httpx.ConnectTimeout,
     aiohttp.ClientConnectorError: httpx.ConnectError,
     aiohttp.ClientPayloadError: httpx.ReadError,
     aiohttp.ClientProxyConnectionError: httpx.ProxyError,
+    aiohttp.client_exceptions.NonHttpUrlClientError: httpx.UnsupportedProtocol,
+    aiohttp.client_exceptions.InvalidUrlClientError: httpx.UnsupportedProtocol,
 }
+
+SOCKET_OPTION = t.Union[
+    t.Tuple[int, int, int],
+    t.Tuple[int, int, t.Union[bytes, bytearray]],
+    t.Tuple[int, int, None, int],
+]
 
 
 @contextlib.contextmanager
@@ -46,9 +57,7 @@ class AiohttpResponseStream(httpx.AsyncByteStream):
 
     async def __aiter__(self) -> typing.AsyncIterator[bytes]:
         with map_aiohttp_exceptions():
-            async for chunk in self._aiohttp_response.content.iter_chunked(
-                self.CHUNK_SIZE
-            ):
+            async for chunk in self._aiohttp_response.content.iter_chunked(self.CHUNK_SIZE):
                 yield chunk
 
     async def aclose(self) -> None:
@@ -58,19 +67,75 @@ class AiohttpResponseStream(httpx.AsyncByteStream):
 
 class AiohttpTransport(httpx.AsyncBaseTransport):
     def __init__(
-        self, client: ClientSession | typing.Callable[[], ClientSession]
+        self,
+        verify: ssl.SSLContext | str | bool = True,
+        cert: t.Union[str, t.Tuple[str, str], t.Tuple[str, str, str], None] = None,
+        trust_env: bool = True,
+        http1: bool = True,
+        http2: bool = False,
+        limits: httpx.Limits = httpx.Limits(max_connections=100, max_keepalive_connections=20),
+        proxy: httpx.Proxy | None = None,
+        uds: str | None = None,
+        local_address: str | None = None,
+        retries: int = 0,
+        socket_options: typing.Iterable[SOCKET_OPTION] | None = None,
+        client: ClientSession | t.Callable[[], ClientSession] | None = None,
+        # Additional keyword arguments for future compatibility
+        # If httpx decides to add one, we won't break the API
+        **kwargs: t.Dict[str, t.Any],
     ) -> None:
+        if http2:
+            if not http1:
+                raise httpx.UnsupportedProtocol("HTTP/2 is not supported by aiohttp transport, use HTTP/1.1 instead.")
+            warning("HTTP/2 is not supported by aiohttp transport, using HTTP/1.1 instead.")
+
+        ssl_context = httpx.create_ssl_context(
+            verify=verify,
+            cert=cert,
+            trust_env=trust_env,
+        )
+
+        self.ssl_context = ssl_context
+        self.proxy = proxy
+        self.limits = limits
+        self.retries = retries
+        self.socket_options = socket_options or []
+        self.uds = uds
+        self.local_address = local_address
+
         self.client = client
+
+    def get_client(self) -> ClientSession:
+        if callable(self.client):
+            return self.client()
+        elif isinstance(self.client, ClientSession):
+            return self.client
+        else:
+            if self.uds:
+                connector = aiohttp.UnixConnector(
+                    path=self.uds,
+                    limit=self.limits.max_connections,
+                    keepalive_timeout=self.limits.keepalive_expiry,
+                    ssl=self.ssl_context,
+                )
+            else:
+                connector = aiohttp.TCPConnector(
+                    limit=self.limits.max_connections,
+                    keepalive_timeout=self.limits.keepalive_expiry,
+                    ssl=self.ssl_context,
+                    local_addr=(self.local_address, 0) if self.local_address else None,
+                )
+            return ClientSession(connector=connector)
 
     async def handle_async_request(
         self,
         request: httpx.Request,
     ) -> httpx.Response:
+        if not isinstance(self.client, ClientSession):
+            self.client = self.get_client()
+
         timeout = request.extensions.get("timeout", {})
         sni_hostname = request.extensions.get("sni_hostname")
-
-        if not isinstance(self.client, ClientSession):
-            self.client = self.client()
 
         with map_aiohttp_exceptions():
             try:
@@ -81,7 +146,7 @@ class AiohttpTransport(httpx.AsyncBaseTransport):
 
             response = await self.client.request(
                 method=request.method,
-                url=str(request.url),
+                url=str(request.url) if request.url else "https://127.0.0.1:8000/",
                 headers=request.headers,
                 data=data,
                 allow_redirects=False,
@@ -93,6 +158,9 @@ class AiohttpTransport(httpx.AsyncBaseTransport):
                     connect=timeout.get("pool"),
                 ),
                 server_hostname=sni_hostname,
+                proxy=str(self.proxy.url) if self.proxy else None,
+                proxy_auth=self.proxy.auth if self.proxy and self.proxy.auth else None,
+                proxy_headers=self.proxy.headers if self.proxy else None,
             ).__aenter__()
 
         return httpx.Response(
@@ -100,6 +168,7 @@ class AiohttpTransport(httpx.AsyncBaseTransport):
             headers=response.headers,
             content=AiohttpResponseStream(response),
             request=request,
+            extensions={"http_version": b"HTTP/1.1", "reason_phrase": response.reason.encode()},
         )
 
     async def aclose(self) -> None:

@@ -4,12 +4,12 @@
 #     "httpx>=0.28.1",
 # ]
 # ///
+import asyncio
 import json
 import os
 import time
 
 import httpx
-import asyncio
 
 SERVER_URL = os.getenv("SERVER_URL")
 REQUESTS_COUNT = int(os.getenv("REQUESTS_COUNT"))
@@ -38,13 +38,7 @@ async def main() -> None:
             json.dumps(
                 {
                     "requests_count": REQUESTS_COUNT,
-                    "success_count": len(
-                        [
-                            response
-                            for response in results
-                            if response.status_code == 200
-                        ]
-                    ),
+                    "success_count": len([response for response in results if response.status_code == 200]),
                     "elapsed_time": t2 - t1,
                 }
             )

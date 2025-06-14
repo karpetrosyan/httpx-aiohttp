@@ -5,9 +5,10 @@
 # ]
 # ///
 import asyncio
-import time
 import json
 import os
+import time
+
 from blacksheep.client import ClientSession
 
 SERVER_URL = os.getenv("SERVER_URL")
@@ -34,9 +35,7 @@ async def main() -> None:
             json.dumps(
                 {
                     "requests_count": REQUESTS_COUNT,
-                    "success_count": len(
-                        [response for response in results if response.status == 200]
-                    ),
+                    "success_count": len([response for response in results if response.status == 200]),
                     "elapsed_time": t2 - t1,
                 }
             )
