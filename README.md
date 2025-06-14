@@ -16,5 +16,5 @@ uv pip install httpx-aiohttp
 
 ## Documentation
 
-Project documentation is available at https://karpetrosyan.github.io/httpx-aiohttp/why/
+Project documentation is available at https://karpetrosyan.github.io/httpx-aiohttp/
 
