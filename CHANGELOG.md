@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.8 (4th July, 2025)
+
+- Don't include `Content-Type` to any empty request.
+
 ## 0.1.7 (4th July, 2025)
 
 - Don't include `Content-Type` to empty get requests. (#20)

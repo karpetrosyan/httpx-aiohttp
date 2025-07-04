@@ -141,12 +141,12 @@ class AiohttpTransport(httpx.AsyncBaseTransport):
             data: t.Union[bytes, httpx.AsyncByteStream, None]
             try:
                 data = request.content
+                if data == b"":
+                    data = None
+
             except httpx.RequestNotRead:
                 data = request.stream  # type: ignore
                 request.headers.pop("transfer-encoding", None)  # handled by aiohttp
-
-            if request.method.lower() == "get":
-                data = None
 
             response = await self.client.request(
                 method=request.method,
