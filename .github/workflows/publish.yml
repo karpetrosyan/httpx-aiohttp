@@ -21,4 +21,4 @@ jobs:
       - name: "Publish"
         run: "uv publish -t ${{ secrets.HTTPX_AIOHTTP }}"
       - name: "Publish docs"
-        run: "uv run ./scripts/publich_docs"
+        run: "uv run ./scripts/publish_docs"
