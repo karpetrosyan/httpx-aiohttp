@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.7 (4th July, 2025)
+
+- Don't include `Content-Type` to empty get requests
+
 ## 0.1.6 (14th June, 2025)
 
 - Add `HttpxAiohttpClient` class 
