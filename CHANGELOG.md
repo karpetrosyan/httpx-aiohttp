@@ -2,7 +2,7 @@
 
 ## 0.1.7 (4th July, 2025)
 
-- Don't include `Content-Type` to empty get requests
+- Don't include `Content-Type` to empty get requests. (#20)
 
 ## 0.1.6 (14th June, 2025)
 
