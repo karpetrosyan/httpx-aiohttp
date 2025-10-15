@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.9 (15th October, 2025)
+
+- Properly close the underlying aiohttp response after reading the content.
+
 ## 0.1.8 (4th July, 2025)
 
 - Don't include `Content-Type` to any empty request.
