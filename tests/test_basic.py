@@ -1,9 +1,12 @@
 from unittest.mock import patch
 
+import pytest
+
 from httpx_aiohttp import HttpxAiohttpClient
 from httpx_aiohttp.transport import AiohttpResponseStream
 
 
+@pytest.mark.anyio
 async def test_response_is_closed_after_request() -> None:
     client = HttpxAiohttpClient()
 
