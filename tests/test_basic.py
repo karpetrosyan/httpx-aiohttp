@@ -19,6 +19,6 @@ async def test_response_is_closed_after_request() -> None:
         return await original_aclose(self)
 
     with patch.object(AiohttpResponseStream, "aclose", spy_aclose):
-        await client.get("https://httpbin.org/get")
+        await client.get("https://httpbin.org/get", timeout=600)
 
         assert call_count == 1
