@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Mapping proxy errors from `aiohttp` to `httpx` (#25).
+
 ## 0.1.9 (15th October, 2025)
 
 - Properly close the underlying aiohttp response after reading the content.
