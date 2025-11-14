@@ -18,6 +18,7 @@ AIOHTTP_EXC_MAP = {
     aiohttp.ClientConnectorError: httpx.ConnectError,
     aiohttp.ClientPayloadError: httpx.ReadError,
     aiohttp.ClientProxyConnectionError: httpx.ProxyError,
+    aiohttp.ClientHttpProxyError: httpx.ProxyError,
     aiohttp.client_exceptions.NonHttpUrlClientError: httpx.UnsupportedProtocol,
     aiohttp.client_exceptions.InvalidUrlClientError: httpx.UnsupportedProtocol,
 }
