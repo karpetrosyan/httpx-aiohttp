@@ -4,6 +4,7 @@ import contextlib
 import ssl
 import typing
 import typing as t
+from importlib import metadata
 from logging import warning
 
 import aiohttp
@@ -19,9 +20,13 @@ AIOHTTP_EXC_MAP = {
     aiohttp.ClientPayloadError: httpx.ReadError,
     aiohttp.ClientProxyConnectionError: httpx.ProxyError,
     aiohttp.ClientHttpProxyError: httpx.ProxyError,
-    aiohttp.client_exceptions.NonHttpUrlClientError: httpx.UnsupportedProtocol,
-    aiohttp.client_exceptions.InvalidUrlClientError: httpx.UnsupportedProtocol,
 }
+
+if metadata.version("aiohttp") >= "3.10.0":
+    AIOHTTP_EXC_MAP |= {
+        aiohttp.client_exceptions.NonHttpUrlClientError: httpx.UnsupportedProtocol,  # type: ignore[reportAttributeAccessIssue]
+        aiohttp.client_exceptions.InvalidUrlClientError: httpx.UnsupportedProtocol,  # type: ignore[reportAttributeAccessIssue]
+    }
 
 SOCKET_OPTION = t.Union[
     t.Tuple[int, int, int],
@@ -112,19 +117,25 @@ class AiohttpTransport(httpx.AsyncBaseTransport):
         elif isinstance(self.client, ClientSession):
             return self.client
         else:
+            limit_kwarg = (
+                {
+                    "limit": self.limits.max_connections,
+                }
+                if self.limits.max_connections is not None
+                else {}
+            )
             if self.uds:
                 connector = aiohttp.UnixConnector(
                     path=self.uds,
-                    limit=self.limits.max_connections,
                     keepalive_timeout=self.limits.keepalive_expiry,
-                    ssl=self.ssl_context,
+                    **limit_kwarg,  # type: ignore
                 )
             else:
                 connector = aiohttp.TCPConnector(
-                    limit=self.limits.max_connections,
                     keepalive_timeout=self.limits.keepalive_expiry,
                     ssl=self.ssl_context,
                     local_addr=(self.local_address, 0) if self.local_address else None,
+                    **limit_kwarg,  # type: ignore
                 )
             return ClientSession(connector=connector)
 
@@ -173,7 +184,8 @@ class AiohttpTransport(httpx.AsyncBaseTransport):
             headers=response.headers,
             stream=AiohttpResponseStream(response),
             request=request,
-            extensions={"http_version": b"HTTP/1.1", "reason_phrase": response.reason.encode()},
+            extensions={"http_version": b"HTTP/1.1"}
+            | ({"reason_phrase": response.reason.encode()} if response.reason else {}),
         )
 
     async def aclose(self) -> None:

@@ -3,7 +3,6 @@ requires = ["hatchling", "hatch-fancy-pypi-readme"]
 build-backend = "hatchling.build"
 
 [project]
-metadata_version = "2.4"
 name = "httpx-aiohttp"
 version = "0.1.9"
 description = "Aiohttp transport for HTTPX"
@@ -26,8 +25,10 @@ dev = [
     "fastapi>=0.115.12",
     "mkdocs-material>=9.6.14",
     "mypy>=1",
+    "pyright>=1.1.404",
     "pytest>=8.3.5",
     "pytest-asyncio>=0.24.0",
+    "pytest-cov",
     "ruff>=0.9.10",
     "trio>=0.27.0",
     "uvicorn>=0.33.0",
@@ -36,6 +37,7 @@ dev = [
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+pythonpath = ["src"]
 
 [tool.ruff]
 line-length = 120
@@ -45,3 +47,4 @@ exclude = [
 
 [tool.ruff.lint]
 select = ["F", "I"]
+
