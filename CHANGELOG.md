@@ -1,26 +1,17 @@
-# Changelog
 
-## Unreleased
+## What's Changed in 0.1.10
+### ⚙️ Miscellaneous Tasks
 
-- Mapping proxy errors from `aiohttp` to `httpx` (#25).
+* add git cliff for changelogs by @karpetrosyan
+* improve CI by @karpetrosyan
+### 🐛 Bug Fixes
 
-## 0.1.9 (15th October, 2025)
+* pass `BasicAuth` instead of deprecated tuple by @karpetrosyan
 
-- Properly close the underlying aiohttp response after reading the content.
 
-## 0.1.8 (4th July, 2025)
+### Contributors
+* @karpetrosyan
+* @jamesbraza
 
-- Don't include `Content-Type` to any empty request.
+**Full Changelog**: https://github.com/karpetrosyan/httpx-aiohttp/compare/0.1.9...0.1.10
 
-## 0.1.7 (4th July, 2025)
-
-- Don't include `Content-Type` to empty get requests. (#20)
-
-## 0.1.6 (14th June, 2025)
-
-- Add `HttpxAiohttpClient` class 
-- Test the aiohttp-powered transport with httpx tests
-
-## 0.1.3 (24th May, 2025)
-
-- Fix streaming requests (#3)

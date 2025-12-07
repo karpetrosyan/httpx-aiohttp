@@ -34,7 +34,7 @@ This section is for maintainers who have permissions to publish new releases.
 
 2. **Generate the changelog** using `git cliff`:
    ```bash
-   git cliff --output CHANGELOG.md --tag 0.0.2
+   git cliff --output CHANGELOG.md 0.1.9.. --tag 0.0.2
    ```
    - Specify the new release tag with `--tag`
 
