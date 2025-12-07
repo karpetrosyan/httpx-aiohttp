@@ -41,10 +41,13 @@ pythonpath = [".", "src"]
 
 [tool.ruff]
 line-length = 120
-exclude = [
-    "tests/httpx"
-]
+exclude = ["tests/httpx"]
 
 [tool.ruff.lint]
 select = ["F", "I"]
 
+[tool.mypy]
+exclude = ["tests/httpx"]
+
+[tool.pyright]
+exclude = ["tests/httpx"]
