@@ -3,4 +3,4 @@
 set -e
 
 echo "==> Running tests"
-uv run pytest --cov=./ --cov-report=xml tests "$@"
+uv run pytest --cov=./ --cov-report=xml tests/local "$@"

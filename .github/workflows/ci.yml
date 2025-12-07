@@ -44,6 +44,7 @@ jobs:
         run: |
           uv pip --directory=tests/httpx install -r requirements.txt
           scripts/test
+          scripts/httpx_test.py
 
       - name: Upload Coverage
         if: runner.os != 'macOS'
