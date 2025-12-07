@@ -9,7 +9,7 @@ from logging import warning
 
 import aiohttp
 import httpx
-from aiohttp import ClientTimeout
+from aiohttp import BasicAuth, ClientTimeout
 from aiohttp.client import ClientResponse, ClientSession
 
 AIOHTTP_EXC_MAP = {
@@ -175,7 +175,9 @@ class AiohttpTransport(httpx.AsyncBaseTransport):
                 ),
                 server_hostname=sni_hostname,
                 proxy=str(self.proxy.url) if self.proxy else None,
-                proxy_auth=self.proxy.auth if self.proxy and self.proxy.auth else None,
+                proxy_auth=BasicAuth(self.proxy.auth[0], self.proxy.auth[1])
+                if self.proxy and self.proxy.auth
+                else None,
                 proxy_headers=self.proxy.headers if self.proxy else None,
             ).__aenter__()
 
