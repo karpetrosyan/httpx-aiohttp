@@ -23,10 +23,12 @@ AIOHTTP_EXC_MAP = {
 }
 
 if metadata.version("aiohttp") >= "3.10.0":
-    AIOHTTP_EXC_MAP |= {
-        aiohttp.client_exceptions.NonHttpUrlClientError: httpx.UnsupportedProtocol,  # type: ignore[reportAttributeAccessIssue]
-        aiohttp.client_exceptions.InvalidUrlClientError: httpx.UnsupportedProtocol,  # type: ignore[reportAttributeAccessIssue]
-    }
+    AIOHTTP_EXC_MAP.update(
+        {
+            aiohttp.client_exceptions.NonHttpUrlClientError: httpx.UnsupportedProtocol,  # type: ignore[reportAttributeAccessIssue]
+            aiohttp.client_exceptions.InvalidUrlClientError: httpx.UnsupportedProtocol,  # type: ignore[reportAttributeAccessIssue]
+        }
+    )
 
 SOCKET_OPTION = t.Union[
     t.Tuple[int, int, int],
