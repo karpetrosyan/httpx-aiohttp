@@ -81,6 +81,8 @@ jobs:
 
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v4
+        with:
+          args: "0.1.9.. --latest"
         env:
           OUTPUT: release-notes.md
           GITHUB_REPO: ${{ github.repository }}
