@@ -1330,7 +1330,7 @@ wheels = [
 
 [[package]]
 name = "httpx-aiohttp"
-version = "0.1.10"
+version = "0.1.11"
 source = { editable = "." }
 dependencies = [
     { name = "aiohttp", version = "3.10.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },

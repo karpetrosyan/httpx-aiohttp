@@ -183,13 +183,17 @@ class AiohttpTransport(httpx.AsyncBaseTransport):
                 proxy_headers=self.proxy.headers if self.proxy else None,
             ).__aenter__()
 
+        extensions = {"http_version": b"HTTP/1.1"}
+
+        if response.reason:
+            extensions["reason_phrase"] = response.reason.encode()
+
         return httpx.Response(
             status_code=response.status,
             headers=response.raw_headers,
             stream=AiohttpResponseStream(response),
             request=request,
-            extensions={"http_version": b"HTTP/1.1"}
-            | ({"reason_phrase": response.reason.encode()} if response.reason else {}),
+            extensions=extensions,
         )
 
     async def aclose(self) -> None:
