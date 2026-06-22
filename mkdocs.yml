@@ -1,0 +1,15 @@
+site_name: httpx-aiohttp
+repo_url: https://github.com/karpetrosyan/httpx-aiohttp
+repo_name: GitHub
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+
+nav:
+  - Introduction: index.md
+  - Compatibility: compatibility.md
+  - How it works: how_it_works.md
+  - How it's tested?: how_its_tested.md
+  - Why?: why.md
