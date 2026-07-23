@@ -14,6 +14,12 @@
 uv pip install httpx-aiohttp
 ```
 
+For [httpx2](https://github.com/pydantic/httpx2) support, install the `httpx2` extra and use `httpx_aiohttp.httpx2.Httpx2AiohttpClient` / `httpx_aiohttp.httpx2.AiohttpTransport`:
+
+```shell
+uv pip install httpx-aiohttp[httpx2]
+```
+
 ## Documentation
 
 Project documentation is available at https://karpetrosyan.github.io/httpx-aiohttp/
