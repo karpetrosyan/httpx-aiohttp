@@ -8,14 +8,14 @@
 
 The `HttpxAiohttpClient` class is an alternative to the `AsyncClient` class that changes the underlying transport from the default `AsyncHTTPTransport` to `AiohttpTransport`.
 
-```py
+```python
 import asyncio
 from httpx_aiohttp import HttpxAiohttpClient
 
 
 async def main() -> None:
     async with HttpxAiohttpClient() as client:
-        response = await client.get("https://encode.io")
+        response = await client.get("https://www.encode.io")
         print(response)
 
 asyncio.run(main())
@@ -25,7 +25,7 @@ asyncio.run(main())
 
 You can also change the transport itself by passing the transport object to the default `AsyncClient`, asking it to use that particular transport.
 
-```py
+```python
 import httpx
 import asyncio
 from httpx_aiohttp import AiohttpTransport
@@ -33,7 +33,7 @@ from httpx_aiohttp import AiohttpTransport
 
 async def main() -> None:
     async with httpx.AsyncClient(transport=AiohttpTransport()) as client:
-        response = await client.get("https://encode.io.com")
+        response = await client.get("https://www.encode.io")
         print(response)
 
 

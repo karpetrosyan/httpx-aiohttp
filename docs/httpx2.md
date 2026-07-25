@@ -12,14 +12,14 @@ uv pip install httpx-aiohttp[httpx2]
 
 `Httpx2AiohttpClient` is the httpx2 counterpart of `HttpxAiohttpClient`: an alternative to `httpx2.AsyncClient` that uses aiohttp as the underlying transport.
 
-```py
+```python
 import asyncio
 from httpx_aiohttp.httpx2 import Httpx2AiohttpClient
 
 
 async def main() -> None:
     async with Httpx2AiohttpClient() as client:
-        response = await client.get("https://encode.io")
+        response = await client.get("https://www.encode.io")
         print(response)
 
 asyncio.run(main())
@@ -29,7 +29,7 @@ asyncio.run(main())
 
 The `httpx_aiohttp.httpx2` module also exposes an `AiohttpTransport` that implements `httpx2.AsyncBaseTransport`, so you can plug it into a plain `httpx2.AsyncClient`:
 
-```py
+```python
 import asyncio
 import httpx2
 from httpx_aiohttp.httpx2 import AiohttpTransport
@@ -37,7 +37,7 @@ from httpx_aiohttp.httpx2 import AiohttpTransport
 
 async def main() -> None:
     async with httpx2.AsyncClient(transport=AiohttpTransport()) as client:
-        response = await client.get("https://encode.io")
+        response = await client.get("https://www.encode.io")
         print(response)
 
 

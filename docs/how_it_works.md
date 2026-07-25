@@ -10,7 +10,7 @@ There is a [wonderful talk](https://www.youtube.com/watch?v=JkCTZB57opI) by the 
 
 In a nutshell, httpx connects to the underlying HTTP implementation through the transport interface, which has a single method (+ some startup/teardown methods with the default implementation) called `handle_request` that looks like this:
 
-```py
+```python
 class BaseTransport:
     def __enter__(self: T) -> T:
         return self
@@ -32,7 +32,7 @@ class BaseTransport:
 
 And for async one:
 
-```py
+```python
 class AsyncBaseTransport:
     async def __aenter__(self: A) -> A:
         return self
