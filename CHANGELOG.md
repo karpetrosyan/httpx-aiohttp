@@ -1,4 +1,21 @@
 
+## What's Changed in 0.2.0
+### 📚 Documentation
+
+* add docs source files by @karpetrosyan
+### 🚀 Features
+
+* feat: add optional httpx2 support via Httpx2AiohttpClient by @craigie-ant in [#34](https://github.com/karpetrosyan/httpx-aiohttp/pull/34)
+* feat!: drop support for Python 3.8 by @craigie-ant in [#33](https://github.com/karpetrosyan/httpx-aiohttp/pull/33)
+
+
+### Contributors
+* @craigie-ant
+* @karpetrosyan
+
+**Full Changelog**: https://github.com/karpetrosyan/httpx-aiohttp/compare/0.1.12...0.2.0
+
+
 ## What's Changed in 0.1.12
 ### ⚙️ Miscellaneous Tasks
 
@@ -14,7 +31,7 @@
 ### Contributors
 * @karpetrosyan
 
-**Full Changelog**: https://github.com/karpetrosyan/httpx-aiohttp/compare/v0.1.11...0.1.12
+**Full Changelog**: https://github.com/karpetrosyan/httpx-aiohttp/compare/0.1.11...0.1.12
 
 
 ## What's Changed in 0.1.11
@@ -27,7 +44,7 @@
 ### Contributors
 * @karpetrosyan
 
-**Full Changelog**: https://github.com/karpetrosyan/httpx-aiohttp/compare/0.1.10...v0.1.11
+**Full Changelog**: https://github.com/karpetrosyan/httpx-aiohttp/compare/0.1.10...0.1.11
 
 
 ## What's Changed in 0.1.10
