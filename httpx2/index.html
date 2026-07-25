@@ -515,36 +515,36 @@
 <h1 id="httpx2-support">httpx2 support</h1>
 <p><a href="https://github.com/pydantic/httpx2">httpx2</a> is an API-compatible continuation of httpx maintained by the Pydantic team. httpx-aiohttp ships a variant of its client and transport built against httpx2 instead of httpx.</p>
 <p>httpx2 support is optional. Install it with the <code>httpx2</code> extra:</p>
-<pre><code class="language-shell">uv pip install httpx-aiohttp[httpx2]
-</code></pre>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>httpx-aiohttp<span class="o">[</span>httpx2<span class="o">]</span>
+</code></pre></div>
 <h2 id="via-httpx2aiohttpclient">via Httpx2AiohttpClient</h2>
 <p><code>Httpx2AiohttpClient</code> is the httpx2 counterpart of <code>HttpxAiohttpClient</code>: an alternative to <code>httpx2.AsyncClient</code> that uses aiohttp as the underlying transport.</p>
-<pre><code class="language-python">import asyncio
-from httpx_aiohttp.httpx2 import Httpx2AiohttpClient
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httpx_aiohttp.httpx2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Httpx2AiohttpClient</span>
 
 
-async def main() -&gt; None:
-    async with Httpx2AiohttpClient() as client:
-        response = await client.get(&quot;https://www.encode.io&quot;)
-        print(response)
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">Httpx2AiohttpClient</span><span class="p">()</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://www.encode.io&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
-asyncio.run(main())
-</code></pre>
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div>
 <h2 id="via-aiohttptransport">via AiohttpTransport</h2>
 <p>The <code>httpx_aiohttp.httpx2</code> module also exposes an <code>AiohttpTransport</code> that implements <code>httpx2.AsyncBaseTransport</code>, so you can plug it into a plain <code>httpx2.AsyncClient</code>:</p>
-<pre><code class="language-python">import asyncio
-import httpx2
-from httpx_aiohttp.httpx2 import AiohttpTransport
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">httpx2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httpx_aiohttp.httpx2</span><span class="w"> </span><span class="kn">import</span> <span class="n">AiohttpTransport</span>
 
 
-async def main() -&gt; None:
-    async with httpx2.AsyncClient(transport=AiohttpTransport()) as client:
-        response = await client.get(&quot;https://www.encode.io&quot;)
-        print(response)
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">httpx2</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">AiohttpTransport</span><span class="p">())</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://www.encode.io&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
 
-asyncio.run(main())
-</code></pre>
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div>
 <p>Everything on the <a href="../compatibility/">compatibility page</a> applies to the httpx2 variant as well — exceptions are raised as <code>httpx2</code> exception types (e.g. <code>httpx2.ConnectError</code>) instead of <code>httpx</code> ones.</p>
 
 

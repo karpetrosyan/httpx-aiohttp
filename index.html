@@ -517,34 +517,36 @@
 
 <h2 id="via-httpxaiohttpclient">via HttpxAiohttpClient</h2>
 <p>The <code>HttpxAiohttpClient</code> class is an alternative to the <code>AsyncClient</code> class that changes the underlying transport from the default <code>AsyncHTTPTransport</code> to <code>AiohttpTransport</code>.</p>
-<pre><code class="language-python">import asyncio
-from httpx_aiohttp import HttpxAiohttpClient
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httpx_aiohttp</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpxAiohttpClient</span>
 
 
-async def main() -&gt; None:
-    async with HttpxAiohttpClient() as client:
-        response = await client.get(&quot;https://www.encode.io&quot;)
-        print(response)
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">HttpxAiohttpClient</span><span class="p">()</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://www.encode.io&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
-asyncio.run(main())
-</code></pre>
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div>
 <h2 id="via-aiohttptransport">via AiohttpTransport</h2>
 <p>You can also change the transport itself by passing the transport object to the default <code>AsyncClient</code>, asking it to use that particular transport.</p>
-<pre><code class="language-python">import httpx
-import asyncio
-from httpx_aiohttp import AiohttpTransport
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httpx_aiohttp</span><span class="w"> </span><span class="kn">import</span> <span class="n">AiohttpTransport</span>
 
 
-async def main() -&gt; None:
-    async with httpx.AsyncClient(transport=AiohttpTransport()) as client:
-        response = await client.get(&quot;https://www.encode.io&quot;)
-        print(response)
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">AiohttpTransport</span><span class="p">())</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://www.encode.io&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
 
-asyncio.run(main())
-</code></pre>
-<p>!!! note "Choose your option carefully"
-    If you aren't familiar with how the client operates with transports, it's preferable to replace the client with the one that httpx_aiohttp provides. Providing a transport forces the client to use that transport by default or for some particular URL pattern, so some client arguments won't work (for example, client timeout configurations won't be respected when you provide your own transport).</p>
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Choose your option carefully</p>
+<p>If you aren't familiar with how the client operates with transports, it's preferable to replace the client with the one that httpx_aiohttp provides. Providing a transport forces the client to use that transport by default or for some particular URL pattern, so some client arguments won't work (for example, client timeout configurations won't be respected when you provide your own transport).</p>
+</div>
 
 
 

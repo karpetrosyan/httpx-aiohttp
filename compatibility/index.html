@@ -560,37 +560,37 @@
 <p>You may encounter some differences when working with alternative transports. This page describes the differences between the default transport and the aiohttp-powered one.</p>
 <h2 id="timeouts">Timeouts</h2>
 <p>Timeouts will work for the aiohttp-powered transport, except for the write timeout, which isn't currently supported in aiohttp.</p>
-<pre><code class="language-python">import asyncio
-from httpx_aiohttp import HttpxAiohttpClient
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httpx_aiohttp</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpxAiohttpClient</span>
 
 
-async def main() -&gt; None:
-    async with HttpxAiohttpClient() as client:
-        response = await httpx_client.get(&quot;https://www.encode.io&quot;, timeout=httpx.Timeout(
-            connect=5.0,
-            read=5.0,
-            pool=5.0,
-            write=None  # Aiohttp doesn't support write timeout
-        ))
-        print(response)
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">HttpxAiohttpClient</span><span class="p">()</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">httpx_client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://www.encode.io&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span>
+            <span class="n">connect</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+            <span class="n">read</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+            <span class="n">pool</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+            <span class="n">write</span><span class="o">=</span><span class="kc">None</span>  <span class="c1"># Aiohttp doesn&#39;t support write timeout</span>
+        <span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
-asyncio.run(main())
-</code></pre>
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div>
 <h2 id="proxies">Proxies</h2>
 <p>HTTP proxies will work as expected, though aiohttp doesn't have built-in support for SOCKS and HTTPS proxies like httpx does. If you want to use SOCKS proxies, for example, you can inject a third-party SOCKS implementation client session (such as <a href="https://pypi.org/project/aiohttp-socks/">aiohttp-socks</a>) into the httpx client.</p>
-<pre><code class="language-python">import asyncio
-from httpx_aiohttp import HttpxAiohttpClient
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httpx_aiohttp</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpxAiohttpClient</span>
 
-async def main() -&gt; None:
-    async with HttpxAiohttpClient(
-        proxy=&quot;http://127.0.0.1:9001&quot;,  # you can use mitmproxy
-    ) as client:
-        response = await client.get(&quot;http://www.encode.io&quot;)
-        print(response)
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">HttpxAiohttpClient</span><span class="p">(</span>
+        <span class="n">proxy</span><span class="o">=</span><span class="s2">&quot;http://127.0.0.1:9001&quot;</span><span class="p">,</span>  <span class="c1"># you can use mitmproxy</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;http://www.encode.io&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
 
-asyncio.run(main())
-</code></pre>
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div>
 <h2 id="event-hooks">Event hooks</h2>
 <p>Event hooks will not work for the aiohttp-powered transport because hooks are called from httpcore, and aiohttp doesn't support them.</p>
 <h2 id="extensions">Extensions</h2>
