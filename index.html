@@ -517,27 +517,27 @@
 
 <h2 id="via-httpxaiohttpclient">via HttpxAiohttpClient</h2>
 <p>The <code>HttpxAiohttpClient</code> class is an alternative to the <code>AsyncClient</code> class that changes the underlying transport from the default <code>AsyncHTTPTransport</code> to <code>AiohttpTransport</code>.</p>
-<pre><code class="language-py">import asyncio
+<pre><code class="language-python">import asyncio
 from httpx_aiohttp import HttpxAiohttpClient
 
 
 async def main() -&gt; None:
     async with HttpxAiohttpClient() as client:
-        response = await client.get(&quot;https://encode.io&quot;)
+        response = await client.get(&quot;https://www.encode.io&quot;)
         print(response)
 
 asyncio.run(main())
 </code></pre>
 <h2 id="via-aiohttptransport">via AiohttpTransport</h2>
 <p>You can also change the transport itself by passing the transport object to the default <code>AsyncClient</code>, asking it to use that particular transport.</p>
-<pre><code class="language-py">import httpx
+<pre><code class="language-python">import httpx
 import asyncio
 from httpx_aiohttp import AiohttpTransport
 
 
 async def main() -&gt; None:
     async with httpx.AsyncClient(transport=AiohttpTransport()) as client:
-        response = await client.get(&quot;https://encode.io.com&quot;)
+        response = await client.get(&quot;https://www.encode.io&quot;)
         print(response)
 
 

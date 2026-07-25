@@ -496,7 +496,7 @@
 <p>You can think of httpx as a sans-io library—it doesn't perform any IO operations, but instead has a great design that allows you to bring your own IO. It comes with a default library for IO called <a href="https://github.com/encode/httpcore">httpcore</a>, but you can use another one if you encounter issues with it.</p>
 <p>There is a <a href="https://www.youtube.com/watch?v=JkCTZB57opI">wonderful talk</a> by the author of those libraries (Tom Christie); you can also take a look for more context.</p>
 <p>In a nutshell, httpx connects to the underlying HTTP implementation through the transport interface, which has a single method (+ some startup/teardown methods with the default implementation) called <code>handle_request</code> that looks like this:</p>
-<pre><code class="language-py">class BaseTransport:
+<pre><code class="language-python">class BaseTransport:
     def __enter__(self: T) -&gt; T:
         return self
 
@@ -515,7 +515,7 @@
         ...
 </code></pre>
 <p>And for async one:</p>
-<pre><code class="language-py">class AsyncBaseTransport:
+<pre><code class="language-python">class AsyncBaseTransport:
     async def __aenter__(self: A) -&gt; A:
         return self
 

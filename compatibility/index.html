@@ -560,7 +560,7 @@
 <p>You may encounter some differences when working with alternative transports. This page describes the differences between the default transport and the aiohttp-powered one.</p>
 <h2 id="timeouts">Timeouts</h2>
 <p>Timeouts will work for the aiohttp-powered transport, except for the write timeout, which isn't currently supported in aiohttp.</p>
-<pre><code class="language-py">import asyncio
+<pre><code class="language-python">import asyncio
 from httpx_aiohttp import HttpxAiohttpClient
 
 
@@ -578,7 +578,7 @@ asyncio.run(main())
 </code></pre>
 <h2 id="proxies">Proxies</h2>
 <p>HTTP proxies will work as expected, though aiohttp doesn't have built-in support for SOCKS and HTTPS proxies like httpx does. If you want to use SOCKS proxies, for example, you can inject a third-party SOCKS implementation client session (such as <a href="https://pypi.org/project/aiohttp-socks/">aiohttp-socks</a>) into the httpx client.</p>
-<pre><code class="language-py">import asyncio
+<pre><code class="language-python">import asyncio
 from httpx_aiohttp import HttpxAiohttpClient
 
 async def main() -&gt; None:

@@ -519,27 +519,27 @@
 </code></pre>
 <h2 id="via-httpx2aiohttpclient">via Httpx2AiohttpClient</h2>
 <p><code>Httpx2AiohttpClient</code> is the httpx2 counterpart of <code>HttpxAiohttpClient</code>: an alternative to <code>httpx2.AsyncClient</code> that uses aiohttp as the underlying transport.</p>
-<pre><code class="language-py">import asyncio
+<pre><code class="language-python">import asyncio
 from httpx_aiohttp.httpx2 import Httpx2AiohttpClient
 
 
 async def main() -&gt; None:
     async with Httpx2AiohttpClient() as client:
-        response = await client.get(&quot;https://encode.io&quot;)
+        response = await client.get(&quot;https://www.encode.io&quot;)
         print(response)
 
 asyncio.run(main())
 </code></pre>
 <h2 id="via-aiohttptransport">via AiohttpTransport</h2>
 <p>The <code>httpx_aiohttp.httpx2</code> module also exposes an <code>AiohttpTransport</code> that implements <code>httpx2.AsyncBaseTransport</code>, so you can plug it into a plain <code>httpx2.AsyncClient</code>:</p>
-<pre><code class="language-py">import asyncio
+<pre><code class="language-python">import asyncio
 import httpx2
 from httpx_aiohttp.httpx2 import AiohttpTransport
 
 
 async def main() -&gt; None:
     async with httpx2.AsyncClient(transport=AiohttpTransport()) as client:
-        response = await client.get(&quot;https://encode.io&quot;)
+        response = await client.get(&quot;https://www.encode.io&quot;)
         print(response)
 
 
