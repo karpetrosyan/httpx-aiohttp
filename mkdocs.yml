@@ -10,6 +10,7 @@ theme:
 nav:
   - Introduction: index.md
   - Compatibility: compatibility.md
+  - httpx2 support: httpx2.md
   - How it works: how_it_works.md
   - How it's tested?: how_its_tested.md
   - Why?: why.md

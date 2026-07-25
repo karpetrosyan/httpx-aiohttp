@@ -3,7 +3,7 @@ from __future__ import annotations
 import ssl
 import typing as t
 
-import httpx
+import httpx2 as httpx
 
 SOCKET_OPTION = t.Union[
     t.Tuple[int, int, int],
@@ -12,7 +12,7 @@ SOCKET_OPTION = t.Union[
 ]
 
 
-class HttpxAiohttpClient(httpx.AsyncClient):
+class Httpx2AiohttpClient(httpx.AsyncClient):
     def _init_transport(
         self,
         verify: ssl.SSLContext | str | bool = True,
